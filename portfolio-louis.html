@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Louis — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --purple:#8b5cf6;
+  --purple-light:#a78bfa;
+  --purple-dark:#4c1d95;
+  --purple-glow:#7c3aed;
+  --midnight:#0a0612;
+  --deep:#100d1a;
+  --muted:#9b8cb5;
+  --text:#d4c5f0;
+  --pink:#e879f9;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--midnight);
+  color:var(--text);
+  font-family:'Raleway',sans-serif;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 10%,rgba(139,92,246,0.18) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 80%,rgba(232,121,249,0.1) 0%,transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 50%,rgba(76,29,149,0.08) 0%,transparent 100%);
+  pointer-events:none;z-index:0;
+}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{
+  position:absolute;border-radius:50%;background:#fff;
+  animation:twinkle var(--d,3s) ease-in-out infinite;
+  animation-delay:var(--dl,0s);
+}
+@keyframes twinkle{0%,100%{opacity:0.1}50%{opacity:0.7}}
+.butterfly-deco{
+  position:fixed;font-size:1.4rem;
+  animation:float var(--d,6s) ease-in-out infinite;
+  animation-delay:var(--dl,0s);
+  pointer-events:none;z-index:1;
+  filter:drop-shadow(0 0 6px rgba(139,92,246,0.6));
+}
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(-5deg)}
+  50%{transform:translateY(-18px) rotate(5deg)}
+}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 2.5rem;
+  background:rgba(10,6,18,0.88);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(139,92,246,0.15);
+}
+.logo{
+  font-family:'Cinzel',serif;font-size:1.05rem;font-weight:700;
+  color:var(--purple-light);letter-spacing:0.15em;
+  text-shadow:0 0 12px rgba(139,92,246,0.5);
+}
+nav ul{list-style:none;display:flex;gap:2rem}
+nav a{
+  font-family:'Share Tech Mono',monospace;font-size:0.72rem;
+  letter-spacing:0.15em;color:var(--muted);text-decoration:none;
+  text-transform:uppercase;transition:color 0.2s,text-shadow 0.2s;
+}
+nav a:hover{color:var(--purple-light);text-shadow:0 0 8px rgba(167,139,250,0.6)}
+section,#contact-wrap{position:relative;z-index:2}
+.section-wrap{max-width:1060px;margin:0 auto;padding:5rem 2rem}
+.section-tag{
+  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
+  letter-spacing:0.4em;color:var(--pink);text-transform:uppercase;
+  margin-bottom:0.5rem;text-shadow:0 0 6px rgba(232,121,249,0.4);
+}
+.section-title{
+  font-family:'Cinzel',serif;font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:700;color:#e8d5ff;margin-bottom:3rem;
+  position:relative;display:inline-block;
+  text-shadow:0 0 20px rgba(139,92,246,0.3);
+}
+.section-title::after{
+  content:'';display:block;height:1px;
+  background:linear-gradient(90deg,var(--purple),var(--pink),transparent);
+  margin-top:0.5rem;width:100%;
+}
+#hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:0 2rem;padding-top:80px;
+}
+.hero-inner{
+  max-width:1060px;margin:0 auto;width:100%;
+  display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:center;
+}
+.hero-tag{
+  font-family:'Share Tech Mono',monospace;font-size:0.72rem;
+  letter-spacing:0.35em;color:var(--pink);margin-bottom:1rem;
+  animation:fadeUp 0.8s ease both;
+}
+.hero-name{
+  font-family:'Cinzel',serif;font-size:clamp(2.8rem,7vw,5rem);
+  font-weight:700;line-height:1.1;color:#f0e8ff;
+  text-shadow:0 0 40px rgba(139,92,246,0.4),0 0 80px rgba(139,92,246,0.15);
+  animation:fadeUp 0.9s 0.1s ease both;
+}
+.hero-name .sub{
+  display:block;font-size:clamp(1rem,2.5vw,1.5rem);font-weight:400;
+  color:var(--purple-light);letter-spacing:0.25em;margin-top:0.3rem;
+  font-family:'Share Tech Mono',monospace;
+}
+.hero-desc{
+  font-size:1rem;font-weight:300;color:var(--muted);
+  line-height:1.85;margin:1.6rem 0 2.2rem;max-width:500px;
+  animation:fadeUp 1s 0.2s ease both;
+}
+.hero-desc strong{color:var(--purple-light);font-weight:600}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp 1s 0.3s ease both}
+.btn{
+  font-family:'Share Tech Mono',monospace;font-size:0.72rem;
+  letter-spacing:0.2em;text-transform:uppercase;padding:0.75rem 1.8rem;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all 0.25s;display:inline-block;
+}
+.btn-main{background:var(--purple);color:#fff;border-radius:2px}
+.btn-main:hover{background:var(--purple-light);box-shadow:0 0 24px rgba(139,92,246,0.5)}
+.btn-ghost{
+  background:transparent;color:var(--purple-light);
+  border:1px solid rgba(139,92,246,0.4);border-radius:2px;
+}
+.btn-ghost:hover{border-color:var(--purple-light);background:rgba(139,92,246,0.08)}
+.avatar-card{
+  width:220px;background:rgba(139,92,246,0.06);
+  border:1px solid rgba(139,92,246,0.2);border-radius:12px;
+  padding:1.8rem 1.4rem;text-align:center;
+  animation:fadeUp 1s 0.15s ease both;flex-shrink:0;
+}
+.avatar{
+  width:90px;height:90px;border-radius:50%;
+  background:linear-gradient(135deg,#4c1d95,#7c3aed,#a855f7);
+  margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;
+  font-family:'Cinzel',serif;font-size:2rem;font-weight:700;color:#fff;
+  box-shadow:0 0 0 3px rgba(139,92,246,0.3),0 0 20px rgba(139,92,246,0.3);
+  position:relative;
+}
+.avatar::after{
+  content:'';position:absolute;width:14px;height:14px;border-radius:50%;
+  background:#3ba55c;bottom:4px;right:4px;border:2px solid var(--midnight);
+}
+.avatar-name{
+  font-family:'Cinzel',serif;font-size:0.9rem;color:#e8d5ff;
+  font-weight:600;letter-spacing:0.05em;margin-bottom:0.2rem;
+}
+.avatar-handle{
+  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
+  color:var(--purple-light);letter-spacing:0.1em;margin-bottom:1rem;
+}
+.status-badge{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  background:rgba(59,165,92,0.12);border:1px solid rgba(59,165,92,0.3);
+  border-radius:20px;padding:0.3rem 0.8rem;
+  font-family:'Share Tech Mono',monospace;font-size:0.65rem;
+  color:#3ba55c;letter-spacing:0.1em;margin-bottom:1rem;
+}
+.dot{width:7px;height:7px;border-radius:50%;background:#3ba55c;flex-shrink:0}
+.avatar-tags{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center}
+.atag{
+  font-family:'Share Tech Mono',monospace;font-size:0.6rem;
+  padding:0.2rem 0.5rem;border-radius:3px;
+  background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.25);
+  color:var(--purple-light);letter-spacing:0.08em;
+}
+.projects-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;
+}
+.proj-card{
+  background:rgba(19,16,32,0.8);border:1px solid rgba(139,92,246,0.15);
+  border-radius:10px;padding:1.6rem;transition:all 0.3s;position:relative;overflow:hidden;
+}
+.proj-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--purple),var(--pink),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.proj-card:hover::before{opacity:1}
+.proj-card:hover{border-color:rgba(139,92,246,0.35);transform:translateY(-4px);background:rgba(26,20,44,0.9)}
+.proj-icon{font-size:1.6rem;margin-bottom:1rem}
+.proj-name{
+  font-family:'Cinzel',serif;font-size:0.95rem;font-weight:600;
+  color:#e8d5ff;margin-bottom:0.5rem;letter-spacing:0.05em;
+}
+.proj-desc{font-size:0.88rem;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:1rem}
+.proj-stack{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1rem}
+.stag{
+  font-family:'Share Tech Mono',monospace;font-size:0.62rem;
+  padding:0.2rem 0.55rem;letter-spacing:0.08em;border-radius:3px;
+}
+.stag-p{background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);color:var(--purple-light)}
+.stag-pk{background:rgba(232,121,249,0.1);border:1px solid rgba(232,121,249,0.25);color:#f0abfc}
+.stag-g{background:rgba(59,165,92,0.1);border:1px solid rgba(59,165,92,0.25);color:#6ee7b7}
+.proj-link{
+  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
+  color:var(--purple-light);text-decoration:none;letter-spacing:0.12em;
+  text-transform:uppercase;border-bottom:1px solid rgba(139,92,246,0.3);
+  padding-bottom:1px;transition:all 0.2s;
+}
+.proj-link:hover{color:#fff;border-color:#fff}
+.skills-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;
+}
+.skill-pill{
+  background:rgba(19,16,32,0.8);border:1px solid rgba(139,92,246,0.15);
+  border-radius:8px;padding:1.2rem 1.4rem;display:flex;align-items:center;
+  gap:0.8rem;transition:all 0.25s;
+}
+.skill-pill:hover{border-color:rgba(139,92,246,0.4);background:rgba(26,20,44,0.9)}
+.skill-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.skill-label{font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:var(--text);letter-spacing:0.1em}
+.skill-bar{flex:1;height:3px;background:rgba(139,92,246,0.12);border-radius:2px;overflow:hidden}
+.skill-fill{
+  height:100%;border-radius:2px;
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+  transition:width 1.2s ease;width:0;
+}
+#contact-wrap{
+  background:rgba(10,6,18,0.7);
+  border-top:1px solid rgba(139,92,246,0.12);
+  border-bottom:1px solid rgba(139,92,246,0.12);
+}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.contact-text{font-size:1rem;color:var(--muted);line-height:1.85;font-weight:300;margin-bottom:2rem}
+.contact-links{display:flex;flex-direction:column;gap:0.9rem}
+.clink{
+  display:flex;align-items:center;gap:0.8rem;
+  font-family:'Share Tech Mono',monospace;font-size:0.75rem;
+  letter-spacing:0.12em;color:var(--muted);text-decoration:none;transition:color 0.2s;
+}
+.clink:hover{color:var(--purple-light)}
+.clink-icon{
+  width:32px;height:32px;border-radius:6px;
+  background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background 0.2s;
+}
+.clink:hover .clink-icon{background:rgba(139,92,246,0.25)}
+.form{display:flex;flex-direction:column;gap:0.9rem}
+.flabel{
+  font-family:'Share Tech Mono',monospace;font-size:0.65rem;
+  letter-spacing:0.2em;color:var(--purple-light);text-transform:uppercase;
+  display:block;margin-bottom:0.35rem;
+}
+.finput{
+  width:100%;background:rgba(139,92,246,0.05);
+  border:1px solid rgba(139,92,246,0.2);color:var(--text);
+  padding:0.7rem 1rem;font-family:'Raleway',sans-serif;font-size:0.9rem;
+  border-radius:4px;outline:none;transition:border-color 0.2s;
+}
+.finput:focus{border-color:rgba(139,92,246,0.5)}
+.finput::placeholder{color:rgba(155,140,181,0.45)}
+textarea.finput{resize:none;height:100px}
+footer{
+  position:relative;z-index:2;text-align:center;padding:2rem;
+  border-top:1px solid rgba(139,92,246,0.08);
+}
+footer p{
+  font-family:'Share Tech Mono',monospace;font-size:0.65rem;
+  letter-spacing:0.2em;color:rgba(139,92,246,0.4);
+}
+.blink{animation:blink 1.2s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:all 0.65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+@media(max-width:680px){
+  .hero-inner{grid-template-columns:1fr}
+  .avatar-card{width:100%}
+  .contact-grid{grid-template-columns:1fr}
+  nav{padding:1rem 1.2rem}
+  nav ul{gap:1rem}
+  nav a{font-size:0.62rem}
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="butterfly-deco" style="top:12%;right:8%;--d:5s;--dl:0s">🦋</div>
+<div class="butterfly-deco" style="top:35%;left:4%;--d:7s;--dl:1.5s;font-size:1rem;opacity:0.6">🦋</div>
+<div class="butterfly-deco" style="bottom:30%;right:5%;--d:6s;--dl:0.8s;font-size:1.1rem;opacity:0.5">🦋</div>
+<div class="butterfly-deco" style="bottom:55%;left:6%;--d:8s;--dl:2s;font-size:0.85rem;opacity:0.4">🦋</div>
+
+<nav>
+  <div class="logo">✦ Louis ✦</div>
+  <ul>
+    <li><a href="#about">Profil</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact-wrap">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">// dev web • discord • mobile</div>
+      <h1 class="hero-name">
+        Louis
+        <span class="sub">destinylouis</span>
+      </h1>
+      <p class="hero-desc">
+        Je construis des <strong>bots Discord</strong> sécurisés, des <strong>apps mobiles</strong> sur mesure, et des <strong>bios HTML</strong> uniques. Passionné par le code et les univers numériques.
+      </p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-main">Voir mes projets</a>
+        <a href="#contact-wrap" class="btn btn-ghost">Me contacter</a>
+      </div>
+    </div>
+    <div class="avatar-card">
+      <div class="avatar">L</div>
+      <div class="avatar-name">Louis</div>
+      <div class="avatar-handle">destinylouis</div>
+      <div class="status-badge"><span class="dot"></span>En ligne</div>
+      <div class="avatar-tags">
+        <span class="atag">Dev Web</span>
+        <span class="atag">Discord</span>
+        <span class="atag">Mobile</span>
+        <span class="atag">HTML/CSS</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-tag">// 01 — À propos</div>
+      <h2 class="section-title">Qui suis-je ?</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem" class="reveal">
+      <p style="color:var(--muted);line-height:1.9;font-weight:300;font-size:1rem">
+        Développeur passionné basé à Montréal, je me spécialise dans les <span style="color:var(--purple-light);font-weight:600">bots Discord</span> complets — sécuritaires et utilitaires — ainsi que dans le développement web et mobile. J'ai aussi une touche artistique : je réalise des <span style="color:var(--pink);font-weight:600">bios Discord personnalisées en HTML</span> qui reflètent vraiment l'identité de chacun.
+      </p>
+      <p style="color:var(--muted);line-height:1.9;font-weight:300;font-size:1rem">
+        Curieux et créatif, j'explore aussi le monde du jeu vidéo. Chaque projet est pour moi une occasion de pousser les limites du design et de la technique — comme ce portfolio que tu regardes en ce moment.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-tag">// 02 — Projets</div>
+      <h2 class="section-title">Ce que je crée</h2>
+    </div>
+    <div class="projects-grid">
+      <div class="proj-card reveal">
+        <div class="proj-icon">🤖</div>
+        <div class="proj-name">Bots Discord</div>
+        <p class="proj-desc">Bots complets — sécurité, modération, utilitaires avancés. Conçus pour être fiables, rapides et extensibles.</p>
+        <div class="proj-stack">
+          <span class="stag stag-g">Node.js</span>
+          <span class="stag stag-p">Discord.js</span>
+          <span class="stag stag-g">MongoDB</span>
+        </div>
+        <a href="https://github.com/louismph8-arch" class="proj-link">→ GitHub</a>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-icon">⚽</div>
+        <div class="proj-name">App Mobile Football</div>
+        <p class="proj-desc">Application mobile dédiée à une équipe de foot — gestion des joueurs, matchs, stats et communication d'équipe.</p>
+        <div class="proj-stack">
+          <span class="stag stag-p">React Native</span>
+          <span class="stag stag-pk">Firebase</span>
+          <span class="stag stag-g">Expo</span>
+        </div>
+        <a href="https://github.com/louismph8-arch" class="proj-link">→ GitHub</a>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-icon">🌌</div>
+        <div class="proj-name">Bios Discord HTML</div>
+        <p class="proj-desc">Profils Discord personnalisés en HTML — chaque bio est unique, sur mesure, avec une identité visuelle forte.</p>
+        <div class="proj-stack">
+          <span class="stag stag-pk">HTML</span>
+          <span class="stag stag-pk">CSS</span>
+          <span class="stag stag-p">Design</span>
+        </div>
+        <a href="https://github.com/louismph8-arch" class="proj-link">→ GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-tag">// 03 — Compétences</div>
+      <h2 class="section-title">Mon arsenal</h2>
+    </div>
+    <div class="skills-grid reveal" id="skills-grid">
+      <div class="skill-pill">
+        <span class="skill-dot" style="background:#a78bfa"></span>
+        <span class="skill-label">JavaScript</span>
+        <div class="skill-bar"><div class="skill-fill" data-w="88"></div></div>
+      </div>
+      <div class="skill-pill">
+        <span class="skill-dot" style="background:#f0abfc"></span>
+        <span class="skill-label">HTML / CSS</span>
+        <div class="skill-bar"><div class="skill-fill" data-w="90"></div></div>
+      </div>
+      <div class="skill-pill">
+        <span class="skill-dot" style="background:#6ee7b7"></span>
+        <span class="skill-label">Node.js</span>
+        <div class="skill-bar"><div class="skill-fill" data-w="82"></div></div>
+      </div>
+      <div class="skill-pill">
+        <span class="skill-dot" style="background:#a78bfa"></span>
+        <span class="skill-label">Discord.js</span>
+        <div class="skill-bar"><div class="skill-fill" data-w="92"></div></div>
+      </div>
+      <div class="skill-pill">
+        <span class="skill-dot" style="background:#f0abfc"></span>
+        <span class="skill-label">React Native</span>
+        <div class="skill-bar"><div class="skill-fill" data-w="70"></div></div>
+      </div>
+      <div class="skill-pill">
+        <span class="skill-dot" style="background:#6ee7b7"></span>
+        <span class="skill-label">Python</span>
+        <div class="skill-bar"><div class="skill-fill" data-w="60"></div></div>
+      </div>
+      <div class="skill-pill">
+        <span class="skill-dot" style="background:#a78bfa"></span>
+        <span class="skill-label">MongoDB</span>
+        <div class="skill-bar"><div class="skill-fill" data-w="72"></div></div>
+      </div>
+      <div class="skill-pill">
+        <span class="skill-dot" style="background:#f0abfc"></span>
+        <span class="skill-label">UI Design</span>
+        <div class="skill-bar"><div class="skill-fill" data-w="78"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="contact-wrap">
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-tag">// 04 — Contact</div>
+      <h2 class="section-title">Me rejoindre</h2>
+    </div>
+    <div class="contact-grid reveal">
+      <div>
+        <p class="contact-text">Un projet de bot Discord, une app mobile, une bio personnalisée ? Ou juste envie de collaborer — je suis là.</p>
+        <div class="contact-links">
+          <a href="https://github.com/louismph8-arch" class="clink" target="_blank">
+            <span class="clink-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#a78bfa"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </span>
+            louismph8-arch
+          </a>
+          <a href="https://discord.com/users/777495590049021972" class="clink" target="_blank">
+            <span class="clink-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="#a78bfa"><path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.175 13.175 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"/></svg>
+            </span>
+            destinylouis
+          </a>
+          <a href="mailto:Louismph8@gmail.com" class="clink">
+            <span class="clink-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </span>
+            Louismph8@gmail.com
+          </a>
+        </div>
+      </div>
+      <div class="form">
+        <div>
+          <label class="flabel">Nom</label>
+          <input type="text" class="finput" placeholder="Ton nom">
+        </div>
+        <div>
+          <label class="flabel">Email</label>
+          <input type="email" class="finput" placeholder="ton@email.com">
+        </div>
+        <div>
+          <label class="flabel">Message</label>
+          <textarea class="finput" placeholder="Ton projet, ta question..."></textarea>
+        </div>
+        <button class="btn btn-main" onclick="this.textContent='Envoyé ✓';this.style.background='#3ba55c'">Envoyer →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>✦ louis — destinylouis — montréal <span class="blink">_</span></p>
+</footer>
+
+<script>
+const starsEl = document.getElementById('stars');
+for (let i = 0; i < 140; i++) {
+  const s = document.createElement('div');
+  s.className = 'star';
+  const sz = Math.random() * 2 + 0.5;
+  s.style.cssText = `
+    left:${Math.random()*100}%;top:${Math.random()*100}%;
+    width:${sz}px;height:${sz}px;
+    --d:${2+Math.random()*4}s;--dl:${Math.random()*5}s;
+    opacity:${0.1+Math.random()*0.4}
+  `;
+  starsEl.appendChild(s);
+}
+
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) setTimeout(() => e.target.classList.add('in'), i * 80);
+  });
+}, {threshold: 0.1});
+reveals.forEach(r => obs.observe(r));
+
+const skillObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    document.querySelectorAll('.skill-fill').forEach(f => {
+      f.style.width = f.dataset.w + '%';
+    });
+    skillObs.disconnect();
+  }
+}, {threshold: 0.3});
+skillObs.observe(document.getElementById('skills-grid'));
+</script>
+</body>
+</html>
