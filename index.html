@@ -11,12 +11,12 @@
   --purple:#8b5cf6;
   --purple-light:#a78bfa;
   --purple-dark:#4c1d95;
-  --purple-glow:#7c3aed;
   --midnight:#0a0612;
   --deep:#100d1a;
   --muted:#9b8cb5;
   --text:#d4c5f0;
   --pink:#e879f9;
+  --green:#3ba55c;
 }
 html{scroll-behavior:smooth}
 body{
@@ -24,36 +24,69 @@ body{
   color:var(--text);
   font-family:'Raleway',sans-serif;
   overflow-x:hidden;
-  min-height:100vh;
+  cursor:none;
 }
+
+/* SCROLL PROGRESS */
+#scroll-bar{
+  position:fixed;top:0;left:0;height:3px;width:0%;
+  background:linear-gradient(90deg,var(--purple),var(--pink));
+  z-index:9999;transition:width 0.1s linear;
+}
+
+/* CURSOR */
+#cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--purple-light);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s,background 0.2s;
+  mix-blend-mode:screen;
+}
+#cursor-ring{
+  position:fixed;width:32px;height:32px;
+  border:1px solid rgba(167,139,250,0.5);
+  border-radius:50%;pointer-events:none;z-index:9997;
+  transform:translate(-50%,-50%);
+  transition:width 0.2s,height 0.2s,border-color 0.2s;
+}
+.cursor-trail{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:9996;
+  transform:translate(-50%,-50%);
+  animation:trailFade 0.6s ease forwards;
+}
+@keyframes trailFade{
+  0%{opacity:0.8;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(0.1)}
+}
+
+/* PARTICLES CANVAS */
+#particles-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* MOON */
+#moon-svg{
+  position:fixed;top:-20px;right:60px;
+  width:220px;opacity:0.18;z-index:0;
+  animation:moonFloat 8s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes moonFloat{
+  0%,100%{transform:translateY(0) rotate(-5deg)}
+  50%{transform:translateY(-15px) rotate(5deg)}
+}
+
+/* BG GRADIENT */
 body::before{
   content:'';position:fixed;inset:0;
   background:
-    radial-gradient(ellipse 60% 40% at 80% 10%,rgba(139,92,246,0.18) 0%,transparent 70%),
-    radial-gradient(ellipse 40% 30% at 20% 80%,rgba(232,121,249,0.1) 0%,transparent 60%),
-    radial-gradient(ellipse 80% 60% at 50% 50%,rgba(76,29,149,0.08) 0%,transparent 100%);
+    radial-gradient(ellipse 60% 40% at 80% 10%,rgba(139,92,246,0.2) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 80%,rgba(232,121,249,0.1) 0%,transparent 60%);
   pointer-events:none;z-index:0;
 }
-.stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.star{
-  position:absolute;border-radius:50%;background:#fff;
-  animation:twinkle var(--d,3s) ease-in-out infinite;
-  animation-delay:var(--dl,0s);
-}
-@keyframes twinkle{0%,100%{opacity:0.1}50%{opacity:0.7}}
-.butterfly-deco{
-  position:fixed;font-size:1.4rem;
-  animation:float var(--d,6s) ease-in-out infinite;
-  animation-delay:var(--dl,0s);
-  pointer-events:none;z-index:1;
-  filter:drop-shadow(0 0 6px rgba(139,92,246,0.6));
-}
-@keyframes float{
-  0%,100%{transform:translateY(0) rotate(-5deg)}
-  50%{transform:translateY(-18px) rotate(5deg)}
-}
+
+/* NAV */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
+  position:fixed;top:0;left:0;right:0;z-index:500;
   display:flex;align-items:center;justify-content:space-between;
   padding:1rem 2.5rem;
   background:rgba(10,6,18,0.88);
@@ -67,12 +100,24 @@ nav{
 }
 nav ul{list-style:none;display:flex;gap:2rem}
 nav a{
-  font-family:'Share Tech Mono',monospace;font-size:0.72rem;
+  font-family:'Share Tech Mono',monospace;font-size:0.7rem;
   letter-spacing:0.15em;color:var(--muted);text-decoration:none;
-  text-transform:uppercase;transition:color 0.2s,text-shadow 0.2s;
+  text-transform:uppercase;transition:color 0.2s;
 }
-nav a:hover{color:var(--purple-light);text-shadow:0 0 8px rgba(167,139,250,0.6)}
-section,#contact-wrap{position:relative;z-index:2}
+nav a:hover{color:var(--purple-light)}
+
+/* SOUND BTN */
+#sound-btn{
+  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
+  letter-spacing:0.15em;color:var(--muted);background:transparent;
+  border:1px solid rgba(139,92,246,0.3);border-radius:20px;
+  padding:0.3rem 0.8rem;cursor:none;transition:all 0.2s;
+}
+#sound-btn:hover{color:var(--purple-light);border-color:var(--purple-light)}
+#sound-btn.on{color:var(--pink);border-color:var(--pink)}
+
+/* SECTIONS */
+section,#contact-wrap,#timeline-sec,#services-sec{position:relative;z-index:2}
 .section-wrap{max-width:1060px;margin:0 auto;padding:5rem 2rem}
 .section-tag{
   font-family:'Share Tech Mono',monospace;font-size:0.68rem;
@@ -90,6 +135,8 @@ section,#contact-wrap{position:relative;z-index:2}
   background:linear-gradient(90deg,var(--purple),var(--pink),transparent);
   margin-top:0.5rem;width:100%;
 }
+
+/* HERO */
 #hero{
   min-height:100vh;display:flex;align-items:center;
   padding:0 2rem;padding-top:80px;
@@ -106,26 +153,31 @@ section,#contact-wrap{position:relative;z-index:2}
 .hero-name{
   font-family:'Cinzel',serif;font-size:clamp(2.8rem,7vw,5rem);
   font-weight:700;line-height:1.1;color:#f0e8ff;
-  text-shadow:0 0 40px rgba(139,92,246,0.4),0 0 80px rgba(139,92,246,0.15);
+  text-shadow:0 0 40px rgba(139,92,246,0.4);
   animation:fadeUp 0.9s 0.1s ease both;
 }
 .hero-name .sub{
-  display:block;font-size:clamp(1rem,2.5vw,1.5rem);font-weight:400;
+  display:block;font-size:clamp(1rem,2.5vw,1.4rem);font-weight:400;
   color:var(--purple-light);letter-spacing:0.25em;margin-top:0.3rem;
   font-family:'Share Tech Mono',monospace;
 }
-.hero-desc{
+.typing-wrap{
   font-size:1rem;font-weight:300;color:var(--muted);
   line-height:1.85;margin:1.6rem 0 2.2rem;max-width:500px;
   animation:fadeUp 1s 0.2s ease both;
+  font-family:'Share Tech Mono',monospace;
 }
-.hero-desc strong{color:var(--purple-light);font-weight:600}
+#typed-text{color:var(--purple-light)}
+.cursor-type{
+  display:inline-block;width:2px;height:1em;
+  background:var(--pink);vertical-align:middle;
+  animation:blink 0.8s step-end infinite;margin-left:2px;
+}
 .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp 1s 0.3s ease both}
 .btn{
   font-family:'Share Tech Mono',monospace;font-size:0.72rem;
   letter-spacing:0.2em;text-transform:uppercase;padding:0.75rem 1.8rem;
-  text-decoration:none;border:none;cursor:pointer;
-  transition:all 0.25s;display:inline-block;
+  text-decoration:none;border:none;cursor:none;transition:all 0.25s;display:inline-block;
 }
 .btn-main{background:var(--purple);color:#fff;border-radius:2px}
 .btn-main:hover{background:var(--purple-light);box-shadow:0 0 24px rgba(139,92,246,0.5)}
@@ -134,6 +186,8 @@ section,#contact-wrap{position:relative;z-index:2}
   border:1px solid rgba(139,92,246,0.4);border-radius:2px;
 }
 .btn-ghost:hover{border-color:var(--purple-light);background:rgba(139,92,246,0.08)}
+
+/* AVATAR CARD */
 .avatar-card{
   width:220px;background:rgba(139,92,246,0.06);
   border:1px solid rgba(139,92,246,0.2);border-radius:12px;
@@ -152,22 +206,22 @@ section,#contact-wrap{position:relative;z-index:2}
   content:'';position:absolute;width:14px;height:14px;border-radius:50%;
   background:#3ba55c;bottom:4px;right:4px;border:2px solid var(--midnight);
 }
-.avatar-name{
-  font-family:'Cinzel',serif;font-size:0.9rem;color:#e8d5ff;
-  font-weight:600;letter-spacing:0.05em;margin-bottom:0.2rem;
-}
-.avatar-handle{
-  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
-  color:var(--purple-light);letter-spacing:0.1em;margin-bottom:1rem;
-}
-.status-badge{
+.avatar-name{font-family:'Cinzel',serif;font-size:0.9rem;color:#e8d5ff;font-weight:600;letter-spacing:0.05em;margin-bottom:0.2rem}
+.avatar-handle{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--purple-light);letter-spacing:0.1em;margin-bottom:0.8rem}
+
+/* DISCORD STATUS LIVE */
+#discord-status{
   display:inline-flex;align-items:center;gap:0.4rem;
-  background:rgba(59,165,92,0.12);border:1px solid rgba(59,165,92,0.3);
   border-radius:20px;padding:0.3rem 0.8rem;
   font-family:'Share Tech Mono',monospace;font-size:0.65rem;
-  color:#3ba55c;letter-spacing:0.1em;margin-bottom:1rem;
+  letter-spacing:0.1em;margin-bottom:1rem;
+  transition:all 0.5s;
 }
-.dot{width:7px;height:7px;border-radius:50%;background:#3ba55c;flex-shrink:0}
+#discord-status.online{background:rgba(59,165,92,0.12);border:1px solid rgba(59,165,92,0.3);color:#3ba55c}
+#discord-status.offline{background:rgba(116,127,141,0.12);border:1px solid rgba(116,127,141,0.3);color:#747f8d}
+#discord-status.dnd{background:rgba(237,66,69,0.12);border:1px solid rgba(237,66,69,0.3);color:#ed4245}
+#discord-status.idle{background:rgba(250,168,26,0.12);border:1px solid rgba(250,168,26,0.3);color:#faa81a}
+.status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:currentColor}
 .avatar-tags{display:flex;flex-wrap:wrap;gap:0.4rem;justify-content:center}
 .atag{
   font-family:'Share Tech Mono',monospace;font-size:0.6rem;
@@ -175,12 +229,13 @@ section,#contact-wrap{position:relative;z-index:2}
   background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.25);
   color:var(--purple-light);letter-spacing:0.08em;
 }
-.projects-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem;
-}
+
+/* PROJECTS */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
 .proj-card{
   background:rgba(19,16,32,0.8);border:1px solid rgba(139,92,246,0.15);
   border-radius:10px;padding:1.6rem;transition:all 0.3s;position:relative;overflow:hidden;
+  cursor:none;
 }
 .proj-card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
@@ -190,48 +245,127 @@ section,#contact-wrap{position:relative;z-index:2}
 .proj-card:hover::before{opacity:1}
 .proj-card:hover{border-color:rgba(139,92,246,0.35);transform:translateY(-4px);background:rgba(26,20,44,0.9)}
 .proj-icon{font-size:1.6rem;margin-bottom:1rem}
-.proj-name{
-  font-family:'Cinzel',serif;font-size:0.95rem;font-weight:600;
-  color:#e8d5ff;margin-bottom:0.5rem;letter-spacing:0.05em;
-}
+.proj-name{font-family:'Cinzel',serif;font-size:0.95rem;font-weight:600;color:#e8d5ff;margin-bottom:0.5rem;letter-spacing:0.05em}
 .proj-desc{font-size:0.88rem;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:1rem}
 .proj-stack{display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:1rem}
-.stag{
-  font-family:'Share Tech Mono',monospace;font-size:0.62rem;
-  padding:0.2rem 0.55rem;letter-spacing:0.08em;border-radius:3px;
-}
+.stag{font-family:'Share Tech Mono',monospace;font-size:0.62rem;padding:0.2rem 0.55rem;letter-spacing:0.08em;border-radius:3px}
 .stag-p{background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.25);color:var(--purple-light)}
 .stag-pk{background:rgba(232,121,249,0.1);border:1px solid rgba(232,121,249,0.25);color:#f0abfc}
 .stag-g{background:rgba(59,165,92,0.1);border:1px solid rgba(59,165,92,0.25);color:#6ee7b7}
-.proj-link{
+.proj-btn{
   font-family:'Share Tech Mono',monospace;font-size:0.68rem;
-  color:var(--purple-light);text-decoration:none;letter-spacing:0.12em;
-  text-transform:uppercase;border-bottom:1px solid rgba(139,92,246,0.3);
-  padding-bottom:1px;transition:all 0.2s;
+  background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);
+  color:var(--purple-light);padding:0.4rem 1rem;border-radius:3px;
+  cursor:none;transition:all 0.2s;letter-spacing:0.1em;
 }
-.proj-link:hover{color:#fff;border-color:#fff}
-.skills-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;
+.proj-btn:hover{background:rgba(139,92,246,0.3);color:#fff}
+
+/* MODAL */
+#modal-overlay{
+  position:fixed;inset:0;z-index:800;
+  background:rgba(10,6,18,0.92);
+  backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.3s;padding:2rem;
 }
+#modal-overlay.open{opacity:1;pointer-events:all}
+#modal-box{
+  background:#13102a;border:1px solid rgba(139,92,246,0.3);
+  border-radius:16px;max-width:600px;width:100%;
+  padding:2.5rem;position:relative;
+  transform:translateY(30px);transition:transform 0.3s;max-height:80vh;overflow-y:auto;
+}
+#modal-overlay.open #modal-box{transform:translateY(0)}
+#modal-close{
+  position:absolute;top:1rem;right:1rem;
+  background:transparent;border:none;color:var(--muted);
+  font-size:1.5rem;cursor:none;transition:color 0.2s;
+  font-family:'Share Tech Mono',monospace;
+}
+#modal-close:hover{color:var(--pink)}
+#modal-icon{font-size:2.5rem;margin-bottom:1rem}
+#modal-name{font-family:'Cinzel',serif;font-size:1.4rem;color:#e8d5ff;margin-bottom:1rem}
+#modal-desc{font-size:0.95rem;color:var(--muted);line-height:1.8;margin-bottom:1.5rem}
+#modal-stack{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem}
+#modal-features{margin-bottom:1.5rem}
+#modal-features h4{font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.2em;color:var(--pink);margin-bottom:0.8rem;text-transform:uppercase}
+#modal-features ul{list-style:none;display:flex;flex-direction:column;gap:0.5rem}
+#modal-features li{font-size:0.88rem;color:var(--muted);display:flex;align-items:flex-start;gap:0.6rem}
+#modal-features li::before{content:'→';color:var(--purple-light);flex-shrink:0}
+#modal-link{display:inline-block}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
 .skill-pill{
   background:rgba(19,16,32,0.8);border:1px solid rgba(139,92,246,0.15);
-  border-radius:8px;padding:1.2rem 1.4rem;display:flex;align-items:center;
-  gap:0.8rem;transition:all 0.25s;
+  border-radius:8px;padding:1.2rem 1.4rem;display:flex;align-items:center;gap:0.8rem;transition:all 0.25s;
 }
 .skill-pill:hover{border-color:rgba(139,92,246,0.4);background:rgba(26,20,44,0.9)}
 .skill-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .skill-label{font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:var(--text);letter-spacing:0.1em}
 .skill-bar{flex:1;height:3px;background:rgba(139,92,246,0.12);border-radius:2px;overflow:hidden}
-.skill-fill{
-  height:100%;border-radius:2px;
-  background:linear-gradient(90deg,var(--purple),var(--pink));
-  transition:width 1.2s ease;width:0;
+.skill-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--purple),var(--pink));transition:width 1.2s ease;width:0}
+
+/* TIMELINE */
+#timeline-sec{background:rgba(10,6,18,0.6);border-top:1px solid rgba(139,92,246,0.08);border-bottom:1px solid rgba(139,92,246,0.08)}
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,var(--purple),var(--pink),transparent);
 }
-#contact-wrap{
-  background:rgba(10,6,18,0.7);
-  border-top:1px solid rgba(139,92,246,0.12);
-  border-bottom:1px solid rgba(139,92,246,0.12);
+.tl-item{
+  position:relative;padding:0 0 2.5rem 2rem;
+  opacity:0;transform:translateX(-20px);transition:all 0.6s ease;
 }
+.tl-item.in{opacity:1;transform:translateX(0)}
+.tl-dot{
+  position:absolute;left:-6px;top:4px;
+  width:13px;height:13px;border-radius:50%;
+  background:var(--purple);border:2px solid var(--midnight);
+  box-shadow:0 0 10px rgba(139,92,246,0.6);
+}
+.tl-year{
+  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
+  letter-spacing:0.2em;color:var(--pink);margin-bottom:0.4rem;
+}
+.tl-title{font-family:'Cinzel',serif;font-size:1rem;color:#e8d5ff;margin-bottom:0.4rem;font-weight:600}
+.tl-desc{font-size:0.88rem;color:var(--muted);line-height:1.7;font-weight:300}
+
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.2rem}
+.serv-card{
+  background:rgba(19,16,32,0.8);border:1px solid rgba(139,92,246,0.15);
+  border-radius:10px;padding:1.8rem;transition:all 0.3s;position:relative;overflow:hidden;
+}
+.serv-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--purple),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.serv-card:hover::after{opacity:1}
+.serv-card:hover{border-color:rgba(139,92,246,0.35);transform:translateY(-3px)}
+.serv-icon{font-size:2rem;margin-bottom:1rem}
+.serv-name{font-family:'Cinzel',serif;font-size:1rem;color:#e8d5ff;margin-bottom:0.4rem}
+.serv-price{
+  font-family:'Share Tech Mono',monospace;font-size:1.3rem;
+  color:var(--purple-light);margin-bottom:1rem;
+  text-shadow:0 0 10px rgba(139,92,246,0.4);
+}
+.serv-price span{font-size:0.7rem;color:var(--muted)}
+.serv-features{list-style:none;display:flex;flex-direction:column;gap:0.45rem;margin-bottom:1.2rem}
+.serv-features li{font-size:0.85rem;color:var(--muted);display:flex;gap:0.5rem;align-items:flex-start}
+.serv-features li::before{content:'✦';color:var(--purple-light);font-size:0.6rem;margin-top:3px;flex-shrink:0}
+.serv-btn{
+  font-family:'Share Tech Mono',monospace;font-size:0.68rem;
+  letter-spacing:0.15em;text-transform:uppercase;
+  background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);
+  color:var(--purple-light);padding:0.5rem 1.2rem;border-radius:3px;
+  cursor:none;transition:all 0.2s;text-decoration:none;display:inline-block;
+}
+.serv-btn:hover{background:rgba(139,92,246,0.3);color:#fff}
+
+/* CONTACT */
+#contact-wrap{background:rgba(10,6,18,0.7);border-top:1px solid rgba(139,92,246,0.12)}
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
 .contact-text{font-size:1rem;color:var(--muted);line-height:1.85;font-weight:300;margin-bottom:2rem}
 .contact-links{display:flex;flex-direction:column;gap:0.9rem}
@@ -244,67 +378,85 @@ section,#contact-wrap{position:relative;z-index:2}
 .clink-icon{
   width:32px;height:32px;border-radius:6px;
   background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.2);
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;transition:background 0.2s;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.2s;
 }
 .clink:hover .clink-icon{background:rgba(139,92,246,0.25)}
 .form{display:flex;flex-direction:column;gap:0.9rem}
-.flabel{
-  font-family:'Share Tech Mono',monospace;font-size:0.65rem;
-  letter-spacing:0.2em;color:var(--purple-light);text-transform:uppercase;
-  display:block;margin-bottom:0.35rem;
-}
+.flabel{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--purple-light);text-transform:uppercase;display:block;margin-bottom:0.35rem}
 .finput{
-  width:100%;background:rgba(139,92,246,0.05);
-  border:1px solid rgba(139,92,246,0.2);color:var(--text);
-  padding:0.7rem 1rem;font-family:'Raleway',sans-serif;font-size:0.9rem;
+  width:100%;background:rgba(139,92,246,0.05);border:1px solid rgba(139,92,246,0.2);
+  color:var(--text);padding:0.7rem 1rem;font-family:'Raleway',sans-serif;font-size:0.9rem;
   border-radius:4px;outline:none;transition:border-color 0.2s;
 }
 .finput:focus{border-color:rgba(139,92,246,0.5)}
 .finput::placeholder{color:rgba(155,140,181,0.45)}
 textarea.finput{resize:none;height:100px}
+
 footer{
   position:relative;z-index:2;text-align:center;padding:2rem;
   border-top:1px solid rgba(139,92,246,0.08);
 }
-footer p{
-  font-family:'Share Tech Mono',monospace;font-size:0.65rem;
-  letter-spacing:0.2em;color:rgba(139,92,246,0.4);
-}
+footer p{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:rgba(139,92,246,0.4)}
 .blink{animation:blink 1.2s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .reveal{opacity:0;transform:translateY(24px);transition:all 0.65s ease}
 .reveal.in{opacity:1;transform:translateY(0)}
+
 @media(max-width:680px){
   .hero-inner{grid-template-columns:1fr}
   .avatar-card{width:100%}
   .contact-grid{grid-template-columns:1fr}
-  nav{padding:1rem 1.2rem}
   nav ul{gap:1rem}
-  nav a{font-size:0.62rem}
+  nav a{font-size:0.6rem}
+  nav{padding:1rem 1rem}
 }
 </style>
 </head>
 <body>
 
-<div class="stars" id="stars"></div>
+<div id="scroll-bar"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
 
-<div class="butterfly-deco" style="top:12%;right:8%;--d:5s;--dl:0s">🦋</div>
-<div class="butterfly-deco" style="top:35%;left:4%;--d:7s;--dl:1.5s;font-size:1rem;opacity:0.6">🦋</div>
-<div class="butterfly-deco" style="bottom:30%;right:5%;--d:6s;--dl:0.8s;font-size:1.1rem;opacity:0.5">🦋</div>
-<div class="butterfly-deco" style="bottom:55%;left:6%;--d:8s;--dl:2s;font-size:0.85rem;opacity:0.4">🦋</div>
+<!-- MOON SVG -->
+<svg id="moon-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="100" r="90" fill="#c4b5fd" opacity="0.9"/>
+  <circle cx="140" cy="70" r="90" fill="#0a0612"/>
+  <circle cx="60" cy="130" r="18" fill="#7c3aed" opacity="0.3"/>
+  <circle cx="120" cy="150" r="10" fill="#7c3aed" opacity="0.2"/>
+  <circle cx="50" cy="80" r="8" fill="#7c3aed" opacity="0.25"/>
+</svg>
+
+<!-- CANVAS PARTICLES -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- MODAL -->
+<div id="modal-overlay">
+  <div id="modal-box">
+    <button id="modal-close">✕</button>
+    <div id="modal-icon"></div>
+    <div id="modal-name"></div>
+    <div id="modal-desc"></div>
+    <div id="modal-stack"></div>
+    <div id="modal-features"><h4>Fonctionnalités</h4><ul id="modal-feat-list"></ul></div>
+    <a id="modal-link" href="https://github.com/louismph8-arch" target="_blank" class="btn btn-main">Voir sur GitHub →</a>
+  </div>
+</div>
 
 <nav>
   <div class="logo">✦ Louis ✦</div>
   <ul>
     <li><a href="#about">Profil</a></li>
     <li><a href="#projects">Projets</a></li>
-    <li><a href="#skills">Skills</a></li>
+    <li><a href="#timeline-sec">Parcours</a></li>
+    <li><a href="#services-sec">Services</a></li>
     <li><a href="#contact-wrap">Contact</a></li>
   </ul>
+  <button id="sound-btn">♪ Son OFF</button>
 </nav>
 
+<!-- HERO -->
 <section id="hero">
   <div class="hero-inner">
     <div>
@@ -313,9 +465,9 @@ footer p{
         Louis
         <span class="sub">destinylouis</span>
       </h1>
-      <p class="hero-desc">
-        Je construis des <strong>bots Discord</strong> sécurisés, des <strong>apps mobiles</strong> sur mesure, et des <strong>bios HTML</strong> uniques. Passionné par le code et les univers numériques.
-      </p>
+      <div class="typing-wrap">
+        <span id="typed-text"></span><span class="cursor-type"></span>
+      </div>
       <div class="hero-btns">
         <a href="#projects" class="btn btn-main">Voir mes projets</a>
         <a href="#contact-wrap" class="btn btn-ghost">Me contacter</a>
@@ -325,7 +477,10 @@ footer p{
       <div class="avatar">L</div>
       <div class="avatar-name">Louis</div>
       <div class="avatar-handle">destinylouis</div>
-      <div class="status-badge"><span class="dot"></span>En ligne</div>
+      <div id="discord-status" class="online">
+        <span class="status-dot"></span>
+        <span id="status-text">Chargement...</span>
+      </div>
       <div class="avatar-tags">
         <span class="atag">Dev Web</span>
         <span class="atag">Discord</span>
@@ -336,6 +491,7 @@ footer p{
   </div>
 </section>
 
+<!-- ABOUT -->
 <section id="about">
   <div class="section-wrap">
     <div class="reveal">
@@ -344,15 +500,16 @@ footer p{
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem" class="reveal">
       <p style="color:var(--muted);line-height:1.9;font-weight:300;font-size:1rem">
-        Développeur passionné basé à Montréal, je me spécialise dans les <span style="color:var(--purple-light);font-weight:600">bots Discord</span> complets — sécuritaires et utilitaires — ainsi que dans le développement web et mobile. J'ai aussi une touche artistique : je réalise des <span style="color:var(--pink);font-weight:600">bios Discord personnalisées en HTML</span> qui reflètent vraiment l'identité de chacun.
+        Développeur passionné basé à Montréal, je me spécialise dans les <span style="color:var(--purple-light);font-weight:600">bots Discord</span> complets — sécuritaires et utilitaires — ainsi que dans le développement web et mobile. J'ai aussi une touche artistique : je réalise des <span style="color:var(--pink);font-weight:600">bios Discord en HTML</span> uniques qui reflètent l'identité de chacun.
       </p>
       <p style="color:var(--muted);line-height:1.9;font-weight:300;font-size:1rem">
-        Curieux et créatif, j'explore aussi le monde du jeu vidéo. Chaque projet est pour moi une occasion de pousser les limites du design et de la technique — comme ce portfolio que tu regardes en ce moment.
+        Curieux et créatif, j'explore aussi le monde du jeu vidéo. Chaque projet est une occasion de pousser les limites du design et de la technique. Disponible pour des missions freelance à Montréal et en remote.
       </p>
     </div>
   </div>
 </section>
 
+<!-- PROJECTS -->
 <section id="projects">
   <div class="section-wrap">
     <div class="reveal">
@@ -360,43 +517,44 @@ footer p{
       <h2 class="section-title">Ce que je crée</h2>
     </div>
     <div class="projects-grid">
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" onclick="openModal(0)">
         <div class="proj-icon">🤖</div>
         <div class="proj-name">Bots Discord</div>
-        <p class="proj-desc">Bots complets — sécurité, modération, utilitaires avancés. Conçus pour être fiables, rapides et extensibles.</p>
+        <p class="proj-desc">Bots complets — sécurité, modération, utilitaires avancés. Fiables, rapides et extensibles.</p>
         <div class="proj-stack">
           <span class="stag stag-g">Node.js</span>
           <span class="stag stag-p">Discord.js</span>
           <span class="stag stag-g">MongoDB</span>
         </div>
-        <a href="https://github.com/louismph8-arch" class="proj-link">→ GitHub</a>
+        <button class="proj-btn">→ Voir les détails</button>
       </div>
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" onclick="openModal(1)">
         <div class="proj-icon">⚽</div>
         <div class="proj-name">App Mobile Football</div>
-        <p class="proj-desc">Application mobile dédiée à une équipe de foot — gestion des joueurs, matchs, stats et communication d'équipe.</p>
+        <p class="proj-desc">Application mobile pour une équipe de foot — joueurs, matchs, stats, communication.</p>
         <div class="proj-stack">
           <span class="stag stag-p">React Native</span>
           <span class="stag stag-pk">Firebase</span>
           <span class="stag stag-g">Expo</span>
         </div>
-        <a href="https://github.com/louismph8-arch" class="proj-link">→ GitHub</a>
+        <button class="proj-btn">→ Voir les détails</button>
       </div>
-      <div class="proj-card reveal">
+      <div class="proj-card reveal" onclick="openModal(2)">
         <div class="proj-icon">🌌</div>
         <div class="proj-name">Bios Discord HTML</div>
-        <p class="proj-desc">Profils Discord personnalisés en HTML — chaque bio est unique, sur mesure, avec une identité visuelle forte.</p>
+        <p class="proj-desc">Profils Discord en HTML sur mesure — chaque bio a une identité visuelle unique.</p>
         <div class="proj-stack">
           <span class="stag stag-pk">HTML</span>
           <span class="stag stag-pk">CSS</span>
           <span class="stag stag-p">Design</span>
         </div>
-        <a href="https://github.com/louismph8-arch" class="proj-link">→ GitHub</a>
+        <button class="proj-btn">→ Voir les détails</button>
       </div>
     </div>
   </div>
 </section>
 
+<!-- SKILLS -->
 <section id="skills">
   <div class="section-wrap">
     <div class="reveal">
@@ -404,54 +562,126 @@ footer p{
       <h2 class="section-title">Mon arsenal</h2>
     </div>
     <div class="skills-grid reveal" id="skills-grid">
-      <div class="skill-pill">
-        <span class="skill-dot" style="background:#a78bfa"></span>
-        <span class="skill-label">JavaScript</span>
-        <div class="skill-bar"><div class="skill-fill" data-w="88"></div></div>
-      </div>
-      <div class="skill-pill">
-        <span class="skill-dot" style="background:#f0abfc"></span>
-        <span class="skill-label">HTML / CSS</span>
-        <div class="skill-bar"><div class="skill-fill" data-w="90"></div></div>
-      </div>
-      <div class="skill-pill">
-        <span class="skill-dot" style="background:#6ee7b7"></span>
-        <span class="skill-label">Node.js</span>
-        <div class="skill-bar"><div class="skill-fill" data-w="82"></div></div>
-      </div>
-      <div class="skill-pill">
-        <span class="skill-dot" style="background:#a78bfa"></span>
-        <span class="skill-label">Discord.js</span>
-        <div class="skill-bar"><div class="skill-fill" data-w="92"></div></div>
-      </div>
-      <div class="skill-pill">
-        <span class="skill-dot" style="background:#f0abfc"></span>
-        <span class="skill-label">React Native</span>
-        <div class="skill-bar"><div class="skill-fill" data-w="70"></div></div>
-      </div>
-      <div class="skill-pill">
-        <span class="skill-dot" style="background:#6ee7b7"></span>
-        <span class="skill-label">Python</span>
-        <div class="skill-bar"><div class="skill-fill" data-w="60"></div></div>
-      </div>
-      <div class="skill-pill">
-        <span class="skill-dot" style="background:#a78bfa"></span>
-        <span class="skill-label">MongoDB</span>
-        <div class="skill-bar"><div class="skill-fill" data-w="72"></div></div>
-      </div>
-      <div class="skill-pill">
-        <span class="skill-dot" style="background:#f0abfc"></span>
-        <span class="skill-label">UI Design</span>
-        <div class="skill-bar"><div class="skill-fill" data-w="78"></div></div>
-      </div>
+      <div class="skill-pill"><span class="skill-dot" style="background:#a78bfa"></span><span class="skill-label">JavaScript</span><div class="skill-bar"><div class="skill-fill" data-w="88"></div></div></div>
+      <div class="skill-pill"><span class="skill-dot" style="background:#f0abfc"></span><span class="skill-label">HTML / CSS</span><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+      <div class="skill-pill"><span class="skill-dot" style="background:#6ee7b7"></span><span class="skill-label">Node.js</span><div class="skill-bar"><div class="skill-fill" data-w="82"></div></div></div>
+      <div class="skill-pill"><span class="skill-dot" style="background:#a78bfa"></span><span class="skill-label">Discord.js</span><div class="skill-bar"><div class="skill-fill" data-w="92"></div></div></div>
+      <div class="skill-pill"><span class="skill-dot" style="background:#f0abfc"></span><span class="skill-label">React Native</span><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+      <div class="skill-pill"><span class="skill-dot" style="background:#6ee7b7"></span><span class="skill-label">Python</span><div class="skill-bar"><div class="skill-fill" data-w="60"></div></div></div>
+      <div class="skill-pill"><span class="skill-dot" style="background:#a78bfa"></span><span class="skill-label">MongoDB</span><div class="skill-bar"><div class="skill-fill" data-w="72"></div></div></div>
+      <div class="skill-pill"><span class="skill-dot" style="background:#f0abfc"></span><span class="skill-label">UI Design</span><div class="skill-bar"><div class="skill-fill" data-w="78"></div></div></div>
     </div>
   </div>
 </section>
 
+<!-- TIMELINE -->
+<div id="timeline-sec">
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-tag">// 04 — Parcours</div>
+      <h2 class="section-title">Mon histoire</h2>
+    </div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2021</div>
+        <div class="tl-title">Premiers pas en code</div>
+        <p class="tl-desc">Découverte du HTML/CSS et du JavaScript. Premiers projets perso, premières bios Discord. La passion commence.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--pink)"></div>
+        <div class="tl-year">2022</div>
+        <div class="tl-title">Plongée dans Discord.js</div>
+        <p class="tl-desc">Création des premiers bots Discord — modération, commandes custom, systèmes de tickets. Apprentissage de Node.js et MongoDB.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-year">2023</div>
+        <div class="tl-title">Développement mobile</div>
+        <p class="tl-desc">Début avec React Native et Expo. Lancement de l'app mobile pour une équipe de football locale — gestion complète des joueurs et matchs.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--pink)"></div>
+        <div class="tl-year">2024</div>
+        <div class="tl-title">Freelance & projets clients</div>
+        <p class="tl-desc">Premiers clients Discord — bots sécuritaires, bios HTML personnalisées, serveurs complets. Montée en compétences Python et architecture backend.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:#6ee7b7"></div>
+        <div class="tl-year">2025 →</div>
+        <div class="tl-title">Maintenant</div>
+        <p class="tl-desc">Open à de nouveaux projets ambitieux. Développeur full-stack polyvalent, disponible pour des collaborations freelance à Montréal et en remote.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div id="services-sec">
+  <div class="section-wrap">
+    <div class="reveal">
+      <div class="section-tag">// 05 — Services</div>
+      <h2 class="section-title">Mes tarifs</h2>
+    </div>
+    <div class="services-grid">
+      <div class="serv-card reveal">
+        <div class="serv-icon">🤖</div>
+        <div class="serv-name">Bot Discord</div>
+        <div class="serv-price">15$ <span>/ bot basique</span></div>
+        <ul class="serv-features">
+          <li>Commandes slash custom</li>
+          <li>Système de modération</li>
+          <li>Logs & sécurité</li>
+          <li>Support après livraison</li>
+        </ul>
+        <a href="https://discord.com/users/777495590049021972" target="_blank" class="serv-btn">Demander un devis</a>
+      </div>
+      <div class="serv-card reveal" style="border-color:rgba(139,92,246,0.35)">
+        <div style="position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,var(--purple),var(--pink));font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:#fff;padding:0.2rem 1rem;border-radius:0 0 6px 6px">POPULAIRE</div>
+        <div class="serv-icon">🌌</div>
+        <div class="serv-name">Bio Discord HTML</div>
+        <div class="serv-price">10$ <span>/ bio</span></div>
+        <ul class="serv-features">
+          <li>Design 100% unique</li>
+          <li>Animations custom</li>
+          <li>Style selon ton profil</li>
+          <li>Livraison rapide</li>
+        </ul>
+        <a href="https://discord.com/users/777495590049021972" target="_blank" class="serv-btn">Demander un devis</a>
+      </div>
+      <div class="serv-card reveal">
+        <div class="serv-icon">📱</div>
+        <div class="serv-name">App Mobile</div>
+        <div class="serv-price">Sur devis <span></span></div>
+        <ul class="serv-features">
+          <li>iOS & Android</li>
+          <li>React Native / Expo</li>
+          <li>Backend Firebase</li>
+          <li>Design inclus</li>
+        </ul>
+        <a href="mailto:Louismph8@gmail.com" class="serv-btn">Me contacter</a>
+      </div>
+      <div class="serv-card reveal">
+        <div class="serv-icon">🌐</div>
+        <div class="serv-name">Site Web</div>
+        <div class="serv-price">25$+ <span>/ site</span></div>
+        <ul class="serv-features">
+          <li>HTML/CSS/JS vanilla</li>
+          <li>Design sur mesure</li>
+          <li>Responsive mobile</li>
+          <li>Hébergement GitHub Pages</li>
+        </ul>
+        <a href="mailto:Louismph8@gmail.com" class="serv-btn">Me contacter</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT -->
 <div id="contact-wrap">
   <div class="section-wrap">
     <div class="reveal">
-      <div class="section-tag">// 04 — Contact</div>
+      <div class="section-tag">// 06 — Contact</div>
       <h2 class="section-title">Me rejoindre</h2>
     </div>
     <div class="contact-grid reveal">
@@ -479,19 +709,10 @@ footer p{
         </div>
       </div>
       <div class="form">
-        <div>
-          <label class="flabel">Nom</label>
-          <input type="text" class="finput" placeholder="Ton nom">
-        </div>
-        <div>
-          <label class="flabel">Email</label>
-          <input type="email" class="finput" placeholder="ton@email.com">
-        </div>
-        <div>
-          <label class="flabel">Message</label>
-          <textarea class="finput" placeholder="Ton projet, ta question..."></textarea>
-        </div>
-        <button class="btn btn-main" onclick="this.textContent='Envoyé ✓';this.style.background='#3ba55c'">Envoyer →</button>
+        <div><label class="flabel">Nom</label><input type="text" class="finput" placeholder="Ton nom"></div>
+        <div><label class="flabel">Email</label><input type="email" class="finput" placeholder="ton@email.com"></div>
+        <div><label class="flabel">Message</label><textarea class="finput" placeholder="Ton projet, ta question..."></textarea></div>
+        <button class="btn btn-main" style="align-self:flex-start;cursor:none" onclick="this.textContent='Envoyé ✓';this.style.background='#3ba55c'">Envoyer →</button>
       </div>
     </div>
   </div>
@@ -502,37 +723,269 @@ footer p{
 </footer>
 
 <script>
-const starsEl = document.getElementById('stars');
-for (let i = 0; i < 140; i++) {
-  const s = document.createElement('div');
-  s.className = 'star';
-  const sz = Math.random() * 2 + 0.5;
-  s.style.cssText = `
-    left:${Math.random()*100}%;top:${Math.random()*100}%;
-    width:${sz}px;height:${sz}px;
-    --d:${2+Math.random()*4}s;--dl:${Math.random()*5}s;
-    opacity:${0.1+Math.random()*0.4}
-  `;
-  starsEl.appendChild(s);
+/* ---- PROJECT DATA ---- */
+const projects = [
+  {
+    icon:'🤖',name:'Bots Discord',
+    desc:'Bots Discord complets conçus pour être robustes, sécurisés et évolutifs. Chaque bot est développé sur mesure selon les besoins du serveur — modération avancée, systèmes de tickets, logs, anti-spam, commandes slash et bien plus.',
+    stack:[['Node.js','g'],['Discord.js','p'],['MongoDB','g'],['Express','p']],
+    features:['Système de modération complet (ban, kick, mute, warn)','Commandes slash avec autocomplétion','Système de tickets et support','Anti-spam et protection anti-raid','Logs détaillés de toutes les actions','Base de données persistante MongoDB','Dashboard web (sur demande)'],
+    link:'https://github.com/louismph8-arch'
+  },
+  {
+    icon:'⚽',name:'App Mobile Football',
+    desc:'Application mobile complète développée pour une équipe de football locale à Montréal. Permet la gestion des joueurs, le suivi des matchs et des statistiques, ainsi que la communication interne de l\'équipe.',
+    stack:[['React Native','p'],['Firebase','pk'],['Expo','g'],['JavaScript','p']],
+    features:['Gestion des joueurs et profils','Calendrier des matchs','Statistiques en temps réel','Messagerie interne d\'équipe','Notifications push','Compatible iOS & Android','Interface simple et intuitive'],
+    link:'https://github.com/louismph8-arch'
+  },
+  {
+    icon:'🌌',name:'Bios Discord HTML',
+    desc:'Création de bios Discord personnalisées en HTML pour les utilisateurs souhaitant un profil unique et mémorable. Chaque bio est conçue sur mesure avec des animations, des couleurs et un style qui reflète l\'identité du client.',
+    stack:[['HTML','pk'],['CSS','pk'],['JavaScript','p'],['Design','p']],
+    features:['Design 100% unique et sur mesure','Animations CSS fluides','Thème personnalisé selon tes préférences','Papillons, étoiles, effets visuels','Livraison rapide (24-48h)','Révisions incluses','Compatible avec les bios Discord premium'],
+    link:'https://github.com/louismph8-arch'
+  }
+];
+
+function openModal(i){
+  const p = projects[i];
+  document.getElementById('modal-icon').textContent = p.icon;
+  document.getElementById('modal-name').textContent = p.name;
+  document.getElementById('modal-desc').textContent = p.desc;
+  const stack = document.getElementById('modal-stack');
+  stack.innerHTML = p.stack.map(([t,c])=>`<span class="stag stag-${c}">${t}</span>`).join('');
+  const feat = document.getElementById('modal-feat-list');
+  feat.innerHTML = p.features.map(f=>`<li>${f}</li>`).join('');
+  document.getElementById('modal-link').href = p.link;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+document.getElementById('modal-close').onclick = closeModal;
+document.getElementById('modal-overlay').onclick = function(e){if(e.target===this)closeModal()};
+function closeModal(){
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+/* ---- SCROLL PROGRESS ---- */
+window.addEventListener('scroll',()=>{
+  const pct = window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+  document.getElementById('scroll-bar').style.width = Math.min(pct,100)+'%';
+});
+
+/* ---- CURSOR + TRAIL ---- */
+let mx=0,my=0,rx=0,ry=0;
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cur.style.left=mx+'px'; cur.style.top=my+'px';
+  spawnTrail(mx,my);
+  spawnButterfly(mx,my);
+});
+function animRing(){
+  rx+=(mx-rx)*0.1; ry+=(my-ry)*0.1;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+
+let trailThrottle=0;
+function spawnTrail(x,y){
+  if(Date.now()-trailThrottle<30) return;
+  trailThrottle=Date.now();
+  const t=document.createElement('div');
+  t.className='cursor-trail';
+  const sz=4+Math.random()*6;
+  const colors=['#8b5cf6','#a78bfa','#e879f9','#c084fc'];
+  t.style.cssText=`left:${x}px;top:${y}px;width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${0.4+Math.random()*0.4}s`;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),600);
 }
 
-const reveals = document.querySelectorAll('.reveal');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) setTimeout(() => e.target.classList.add('in'), i * 80);
+/* ---- BUTTERFLY CURSOR FOLLOWERS ---- */
+const bflies=[];
+const BF_COUNT=3;
+for(let i=0;i<BF_COUNT;i++){
+  const b=document.createElement('div');
+  b.style.cssText=`position:fixed;pointer-events:none;z-index:9995;font-size:${0.9+i*0.2}rem;transition:none;filter:drop-shadow(0 0 4px rgba(139,92,246,0.7));`;
+  b.textContent='🦋';
+  document.body.appendChild(b);
+  bflies.push({el:b,x:100,y:100,delay:0.08*(i+1)+0.05});
+}
+let bfx=0,bfy=0;
+document.addEventListener('mousemove',e=>{bfx=e.clientX;bfy=e.clientY});
+function animBflies(){
+  bflies.forEach((b,i)=>{
+    b.x+=(bfx-b.x)*b.delay;
+    b.y+=(bfy-b.y)*b.delay;
+    b.el.style.left=(b.x-10)+'px';
+    b.el.style.top=(b.y-10)+'px';
+    b.el.style.transform=`rotate(${Math.sin(Date.now()*0.002+i)*15}deg) scale(${0.8+Math.sin(Date.now()*0.004+i)*0.15})`;
   });
-}, {threshold: 0.1});
-reveals.forEach(r => obs.observe(r));
+  requestAnimationFrame(animBflies);
+}
+animBflies();
 
-const skillObs = new IntersectionObserver(entries => {
-  if (entries[0].isIntersecting) {
-    document.querySelectorAll('.skill-fill').forEach(f => {
-      f.style.width = f.dataset.w + '%';
+/* ---- PARTICLES CANVAS ---- */
+const canvas=document.getElementById('particles-canvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight});
+
+const pts=[];
+for(let i=0;i<80;i++){
+  pts.push({
+    x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+    r:Math.random()*2+0.5,
+    vx:(Math.random()-0.5)*0.3, vy:(Math.random()-0.5)*0.3,
+    alpha:Math.random()*0.5+0.1,
+    color:Math.random()>0.5?'139,92,246':'232,121,249'
+  });
+}
+function drawParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pts.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0)p.x=canvas.width; if(p.x>canvas.width)p.x=0;
+    if(p.y<0)p.y=canvas.height; if(p.y>canvas.height)p.y=0;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.color},${p.alpha})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+
+/* ---- TYPING EFFECT ---- */
+const phrases=[
+  'Je code des bots Discord sécurisés.',
+  'Je crée des bios Discord uniques.',
+  'Je développe des apps mobiles.',
+  'Je construis des sites web custom.',
+  'Je transforme tes idées en code.',
+];
+let pi=0,ci=0,deleting=false,typePause=0;
+const typedEl=document.getElementById('typed-text');
+function typeLoop(){
+  const phrase=phrases[pi];
+  if(!deleting){
+    typedEl.textContent=phrase.slice(0,ci+1);
+    ci++;
+    if(ci===phrase.length){deleting=true;typePause=60;setTimeout(typeLoop,1800);return}
+  } else {
+    if(typePause>0){typePause--;setTimeout(typeLoop,20);return}
+    typedEl.textContent=phrase.slice(0,ci-1);
+    ci--;
+    if(ci===0){deleting=false;pi=(pi+1)%phrases.length}
+  }
+  setTimeout(typeLoop,deleting?40:65);
+}
+setTimeout(typeLoop,1200);
+
+/* ---- DISCORD STATUS ---- */
+function updateDiscordStatus(){
+  const statusEl=document.getElementById('discord-status');
+  const textEl=document.getElementById('status-text');
+  // Lanyard API for real Discord presence
+  fetch('https://api.lanyard.rest/v1/users/777495590049021972')
+    .then(r=>r.json())
+    .then(data=>{
+      if(data.success){
+        const s=data.data.discord_status;
+        statusEl.className='';
+        statusEl.id='discord-status';
+        if(s==='online'){statusEl.classList.add('online');textEl.textContent='En ligne'}
+        else if(s==='dnd'){statusEl.classList.add('dnd');textEl.textContent='Ne pas déranger'}
+        else if(s==='idle'){statusEl.classList.add('idle');textEl.textContent='Inactif'}
+        else{statusEl.classList.add('offline');textEl.textContent='Hors ligne'}
+      }
+    })
+    .catch(()=>{
+      document.getElementById('discord-status').className='online';
+      document.getElementById('discord-status').id='discord-status';
+      document.getElementById('status-text').textContent='En ligne';
     });
+}
+updateDiscordStatus();
+setInterval(updateDiscordStatus,30000);
+
+/* ---- SOUND ---- */
+let audioCtx=null, soundOn=false, noiseNode=null, gainNode=null;
+document.getElementById('sound-btn').onclick=function(){
+  soundOn=!soundOn;
+  this.textContent=soundOn?'♪ Son ON':'♪ Son OFF';
+  this.classList.toggle('on',soundOn);
+  if(soundOn){
+    if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    gainNode=audioCtx.createGain();
+    gainNode.gain.setValueAtTime(0,audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.04,audioCtx.currentTime+2);
+    const bufSize=audioCtx.sampleRate*2;
+    const buf=audioCtx.createBuffer(1,bufSize,audioCtx.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<bufSize;i++) data[i]=(Math.random()*2-1)*0.5;
+    noiseNode=audioCtx.createBufferSource();
+    noiseNode.buffer=buf; noiseNode.loop=true;
+    const filter=audioCtx.createBiquadFilter();
+    filter.type='bandpass'; filter.frequency.value=200; filter.Q.value=0.5;
+    noiseNode.connect(filter); filter.connect(gainNode); gainNode.connect(audioCtx.destination);
+    noiseNode.start();
+  } else {
+    if(gainNode) gainNode.gain.linearRampToValueAtTime(0,audioCtx.currentTime+1);
+    setTimeout(()=>{if(noiseNode)noiseNode.stop()},1100);
+  }
+};
+
+/* ---- SCROLL REVEAL ---- */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting) setTimeout(()=>e.target.classList.add('in'),i*80);
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
+
+/* ---- TIMELINE REVEAL ---- */
+const tlObs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting) setTimeout(()=>e.target.classList.add('in'),i*150);
+  });
+},{threshold:0.15});
+document.querySelectorAll('.tl-item').forEach(t=>tlObs.observe(t));
+
+/* ---- SKILL BARS ---- */
+const skillObs=new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting){
+    document.querySelectorAll('.skill-fill').forEach(f=>f.style.width=f.dataset.w+'%');
     skillObs.disconnect();
   }
-}, {threshold: 0.3});
+},{threshold:0.3});
 skillObs.observe(document.getElementById('skills-grid'));
+
+/* ---- CURSOR HOVER ---- */
+document.querySelectorAll('a,button,.proj-card,.serv-card,.skill-pill').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    ring.style.width='50px'; ring.style.height='50px';
+    ring.style.borderColor='rgba(232,121,249,0.7)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    ring.style.width='32px'; ring.style.height='32px';
+    ring.style.borderColor='rgba(167,139,250,0.5)';
+  });
+});
+
+/* ---- NAV ACTIVE ---- */
+window.addEventListener('scroll',()=>{
+  const sections=document.querySelectorAll('section[id],[id="timeline-sec"],[id="services-sec"],[id="contact-wrap"]');
+  let cur='';
+  sections.forEach(s=>{if(window.scrollY>=s.offsetTop-120)cur=s.id});
+  document.querySelectorAll('nav a').forEach(a=>{
+    a.style.color=a.getAttribute('href')==='#'+cur?'var(--purple-light)':'';
+  });
+});
 </script>
 </body>
 </html>
